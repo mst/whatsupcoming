@@ -1,5 +1,5 @@
  # Django settings for sup project.
-PROJECT_ROOT = "/Users/marcelsteinbach/Projects/sup"
+PROJECT_ROOT = "/home/marcelst/whatsupcoming"
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -102,10 +102,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'sup.urls'
+ROOT_URLCONF = 'whatsupcoming.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'sup.wsgi.application'
+WSGI_APPLICATION = 'whatsupcoming.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
