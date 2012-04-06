@@ -1,5 +1,5 @@
  # Django settings for sup project.
-PROJECT_ROOT = "/home/marcelst/whatsupcoming"
+PROJECT_ROOT = "/Users/marcelsteinbach/Projects/sup"
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

@@ -9,6 +9,8 @@ def upcoming(request):
         events = Event.objects.filter(date_start__gt=datetime.utcnow())
 	for event in events:
 	    event.remaining = event.date_start.replace(tzinfo=None) - datetime.utcnow().replace(tzinfo=None)
+	    event.days = event.remaining.days	    
+	    event.minutes = event.remaining.seconds/60
     except Event.DoesNotExist:
         raise Http404
     return render_to_response('eventsearch/upcoming.html', {'events': events})
