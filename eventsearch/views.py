@@ -6,7 +6,7 @@ from datetime import datetime
 
 def upcoming(request):
     try:
-        events = Event.objects.filter(date_start__gt=datetime.utcnow())
+        events = Event.objects.filter(date_start__gt=datetime.now())
 	for event in events:
 	    event.remaining = event.date_start.replace(tzinfo=None) - datetime.utcnow().replace(tzinfo=None)
 	    event.days = event.remaining.days	    
