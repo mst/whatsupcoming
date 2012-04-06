@@ -115,7 +115,7 @@ TEMPLATE_DIRS = (
     PROJECT_ROOT + "/templates"
 )
 
-INSTALLED_APP = (
+INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
