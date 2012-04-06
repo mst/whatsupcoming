@@ -1,5 +1,6 @@
  # Django settings for sup project.
-PROJECT_ROOT = "/Users/marcelsteinbach/Projects/sup"
+import env_settings
+PROJECT_ROOT=env_settings.PROJECT_ROOT
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
