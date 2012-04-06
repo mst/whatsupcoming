@@ -1,0 +1,16 @@
+{% if events %}
+<ul>
+  {% for e in events %}
+  <li><i>{{ e.name }}</i> 
+
+    {% if e.days > 0%}
+      {{ e.days }} days,
+    {% endif %}
+    {{ e.minutes }} minutes left 
+
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No events upcoming</p>
+{% endif %}
