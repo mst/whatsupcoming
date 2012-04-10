@@ -1,7 +1,7 @@
 from django.http import Http404
 from datetime import datetime
 from eventsearch.models import Event
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,get_object_or_404
 from datetime import datetime
 
 def upcoming(request):
@@ -14,3 +14,10 @@ def upcoming(request):
     except Event.DoesNotExist:
         raise Http404
     return render_to_response('eventsearch/upcoming.html', {'events': events})
+
+def detail(request,event_id):
+    e = get_object_or_404(Event, pk=event_id)
+    return render_to_response('eventsearch/detail.html',{'event' : e})
+
+    
+    
