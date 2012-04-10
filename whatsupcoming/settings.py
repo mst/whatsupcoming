@@ -1,6 +1,6 @@
  # Django settings for sup project.
-import env_settings
-PROJECT_ROOT=env_settings.PROJECT_ROOT
+#import env_settings
+PROJECT_ROOT='/Users/uli/Projects/whatsupcoming/'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

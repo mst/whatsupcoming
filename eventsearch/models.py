@@ -8,13 +8,18 @@ class Location(models.Model):
     def __unicode__(self):
 	return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length="200")
+    def __unicode__(self):
+        return self.name
+    
 class Event(models.Model):
     name = models.CharField(max_length="200")
     date_start = models.DateTimeField('start date')
     date_end = models.DateTimeField('end date', null=True)
     address = map_fields.AddressField(max_length=200)
     geolocation = map_fields.GeoLocationField(max_length=100)    
-
+    categories = models.ManyToManyField(Category)
     def __unicode__(self):
 	return self.name + " at " + self.address
 
