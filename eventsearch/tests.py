@@ -1,16 +1,18 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+import unittest
+from eventsearch.kanewsparser import KaNewsParser
+from lxml import etree
+from lxml.html.soupparser import parse
 
-Replace this with more appropriate tests for your application.
-"""
+class TestKaNewsParser(unittest.TestCase):
 
-from django.test import TestCase
+    filename = 'kanews.html'
+    
+    def setUp(self):
+	self.parser = KaNewsParser()
+	self.html = open(self.filename).read()
+
+    def test_should_find_all_entries(self):
+	events = self.parser.get_events_for_html(self.html)
+        self.assertEquals(25, len(events))
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
