@@ -1,4 +1,4 @@
-import urllib
+from urllib import URLopener
 from models import Event
 from models import Location
 from datetime import datetime
@@ -12,8 +12,8 @@ class KaNewsParser:
 	return self.parse_tree(tree)
 	
     def get_events_for_url(self, url):
-	content = urllib.open(url).read()
-	return get_events_for_html(content)
+	content =  URLopener().open(url).read()
+	return self.get_events_for_html(content)
 	
     def parse_tree(self, tree):
 	context  = tree.xpath("//div[@class='Content']/div[contains(@class,'Row')]")

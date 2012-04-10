@@ -14,5 +14,9 @@ class TestKaNewsParser(unittest.TestCase):
     def test_should_find_all_entries(self):
 	events = self.parser.get_events_for_html(self.html)
         self.assertEquals(25, len(events))
+        
 
-
+    def test_url_open(self):
+        """ reads the url and parses the events """
+        events = self.parser.get_events_for_url("http://www.ka-news.de/kultur/events/")
+        self.assertEquals(25, len(events))
