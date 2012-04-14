@@ -12,11 +12,11 @@ class TestKaNewsParser(unittest.TestCase):
 	self.html = open(self.filename).read()
 
     def test_should_find_all_entries(self):
-	events = self.parser.get_events_for_html(self.html)
+	events = self.parser._events_for_html(self.html)
         self.assertEquals(25, len(events))
         
 
-    def test_url_open(self):
+    def test_page_fetch(self):
         """ reads the url and parses the events """
-        events = self.parser.get_events_for_url("http://www.ka-news.de/kultur/events/")
+        events = self.parser.events_for_page(1)
         self.assertEquals(25, len(events))
