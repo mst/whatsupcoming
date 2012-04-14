@@ -6,20 +6,22 @@ from models import Location
 from datetime import datetime
 from lxml import etree
 from lxml.html.soupparser import fromstring
+import time
 
 class KaNewsParser:
     """ parses a page in on kanews.de's events page. """
     """ The events page is paginated, starting from page 0, call  """
     """ events = parser.events_for_page(0) to retrieve the events objects """
 
-    _url = "http://www.ka-news.de/kultur/events/#kalender"
+    _url = "http://www.ka-news.de/kultur/events/"
 
     def import_events_from_page(self, page):
          content = self._html_for_page_nr(page)
          return self._events_for_html(content)
 
     def _html_for_page_nr(self, page):
-        params = { 'event[suche][pager][page]': page }
+        params = { 'event[suche][pager][page]': page,
+                   'event[suche][kalender-tag]' : int(time.time() ) }
         return urllib.urlopen(self._url, urllib.urlencode(params)).read()
 
     def _events_for_html(self, html):
