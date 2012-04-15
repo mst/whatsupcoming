@@ -1,8 +1,14 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
 </head>
-<body>
+<body >
+
+your position
+<div id="lat"></div>
+<div id="lon"></div>
+
 {% if events %}
 <ul>
   {% for e in events %}
@@ -19,5 +25,14 @@
 {% else %}
 <p>No events upcoming</p>
 {% endif %}
+
+<script>
+navigator.geolocation.getCurrentPosition(GetLocation)
+function GetLocation(location) {
+	document.getElementById("lat").innerHTML = location.coords.latitude;
+    document.getElementById("lon").innerHTML =  location.coords.longitude;
+	
+}
+</script>
 </body>
 </html>
