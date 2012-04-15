@@ -38,12 +38,12 @@
 <div id="lat"></div>
 <div id="lon"></div>
 </br>
-<a id="showclose">Show Events Close to you</a>
+<a id="showclose">Determining your location ...</a>
 
 {% if events %}
 <ul class="events">
   {% for e in events %}
-  <li class = "event"><i><a class='eventlink' href="../event/{{ e.id }}">{{ e }}</a>
+  <li class = "event" ><i><a class='eventlink' href="../event/{{ e.id }}" >{{ e }}</a></i>
 </br>
 
     {% if e.days > 0%}
@@ -59,12 +59,16 @@
 {% endif %}
 
 <script>
-navigator.geolocation.getCurrentPosition(GetLocation)
+
+
+navigator.geolocation.getCurrentPosition(GetLocation);
 function GetLocation(location) {
+	
 	document.getElementById("lat").innerHTML = location.coords.latitude;
     document.getElementById("lon").innerHTML =  location.coords.longitude;
-	//document.getElementById("showclose").innerHTML = "Show Events close to you";
-	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.latitude;
+	
+	document.getElementById("showclose").innerHTML = "Show Events close to you";
+	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
 //	document.write("<a href='upcoming.html?P" + location.coords.latitude + "&" + location.coords.latitude + ">near you</a>");
 	
 }
