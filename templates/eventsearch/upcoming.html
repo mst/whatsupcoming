@@ -1,27 +1,55 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<style type="text/css">
+		body{
+				background-color:#546F85;}
+		ul {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		font-style: normal;
+		line-height: 2em;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		color: #E6E3FF	;
+		text-decoration: none;
 
+		text-indent: 5px;
+		list-style-position: outside;
+		list-style-image: url(arrow.gif);
+		list-style-type: none;
+		padding: 6px;
+		margin: 2px;}
+		li {margin:2px;	
+			background-color: #0066B3	;
+			padding:	4px;}
+	  	a.eventlink {text-decoration: none;
+		font-family: Verdana,Arial,Helvetica, sans-serif;
+		font-weight:bold;
+		color: #E6E3FF	;}
+		div{display:none;}
+	</style>
 </head>
 <body >
 
-your position
-
 <div id="lat"></div>
 <div id="lon"></div>
-<a id="showclose"></a>
+</br>
+<a id="showclose">Show Events Close to you</a>
 
 {% if events %}
-<ul>
+<ul class="events">
   {% for e in events %}
-  <li><i>{{ e.name }}</i> 
+  <li class = "event"><i><a class='eventlink' href="../event/{{ e.id }}">{{ e }}</a>
+</br>
 
     {% if e.days > 0%}
       {{ e.days }} days,
     {% endif %}
     {{ e.minutes }} minutes left 
 
-  <a href="../event/{{ e.id }}">detail</a></li>
+  </li>
   {% endfor %}
 </ul>
 {% else %}
@@ -33,7 +61,7 @@ navigator.geolocation.getCurrentPosition(GetLocation)
 function GetLocation(location) {
 	document.getElementById("lat").innerHTML = location.coords.latitude;
     document.getElementById("lon").innerHTML =  location.coords.longitude;
-	document.getElementById("showclose").innerHTML = "Show Events close to you";
+	//document.getElementById("showclose").innerHTML = "Show Events close to you";
 	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.latitude;
 //	document.write("<a href='upcoming.html?P" + location.coords.latitude + "&" + location.coords.latitude + ">near you</a>");
 	

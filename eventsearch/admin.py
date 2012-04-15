@@ -9,6 +9,9 @@ class LocationInline(admin.TabularInline):
 class LocationAdmin(admin.ModelAdmin):
     pass
 
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
 class EventAdmin(admin.ModelAdmin):
     formfield_overrides = {
 	map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},    
@@ -16,3 +19,4 @@ class EventAdmin(admin.ModelAdmin):
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
+admin.site.register(Category, CategoryAdmin)
