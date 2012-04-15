@@ -6,8 +6,10 @@
 <body >
 
 your position
+
 <div id="lat"></div>
 <div id="lon"></div>
+<a id="showclose"></a>
 
 {% if events %}
 <ul>
@@ -31,6 +33,9 @@ navigator.geolocation.getCurrentPosition(GetLocation)
 function GetLocation(location) {
 	document.getElementById("lat").innerHTML = location.coords.latitude;
     document.getElementById("lon").innerHTML =  location.coords.longitude;
+	document.getElementById("showclose").innerHTML = "Show Events close to you";
+	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.latitude;
+//	document.write("<a href='upcoming.html?P" + location.coords.latitude + "&" + location.coords.latitude + ">near you</a>");
 	
 }
 </script>
