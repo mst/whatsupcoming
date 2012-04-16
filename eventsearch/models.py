@@ -12,8 +12,14 @@ class Location(models.Model):
     def save(self):
         
         g  = geocoders.Google(domain='maps.google.de') 
-    
-        place, (self.latitude, self.longitude) = g.geocode( self.name + ',' + self.city,exactly_one=False )[0]
+        
+        try:
+        # fist try venue name
+            place, (self.latitude, self.longitude) = g.geocode( self.name + ',' + self.city,exactly_one=False )[0]
+        except:
+            place, (self.latitude, self.longitude) = g.geocode( self.address + ',' + self.city,exactly_one=False )[0]
+        else:
+            pass
         
         super(Location, self).save()
     
