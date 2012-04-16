@@ -1,10 +1,21 @@
 from django.db import models
 from django_google_maps import fields as map_fields
+from geopy import geocoders
 
 class Location(models.Model):
     name = models.CharField(max_length="200")
     city = models.CharField(max_length="200", null=True)
     address = models.CharField(max_length="200",null=True)
+    latitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True,editable=False)
+
+    longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True,editable=False)
+    
+    def save(self):
+        
+        g  = geocoders.Google(domain='maps.google.de') 
+        place, (self.latitude, self.longitude) = g.geocode( self.address + ' ' + self.city )
+        super(Location, self).save()
+    
 
     def __unicode__(self):
 	return self.name + ", " + self.city
