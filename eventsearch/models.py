@@ -28,7 +28,7 @@ class Location(models.Model):
             self.name = place.name
             self.latitude =  place.geo_location['lat']
             self.longitude = place.geo_location['lng']
-            self.address = place.streetAddress
+            
            
 
     # The following method has to make a further API call
