@@ -2,6 +2,9 @@ from django.db import models
 from django_google_maps import fields as map_fields
 from geopy import geocoders
 from googlemaps import GoogleMaps
+from googleplaces import GooglePlaces, types
+
+YOUR_API_KEY = 'AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8'
 
 
 class Location(models.Model):
@@ -12,17 +15,23 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     
     def save(self):
-           
+        query_result = ''
+        query_result = GooglePlaces(YOUR_API_KEY).query(
+        location=self.city +', Germany', keyword=self.name,
+        radius=20000)
+        if query_result.has_attributions:
+            
+            
+            place = query_result.places[0]
         
-        try:
-            gmaps = GoogleMaps('AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8')
-            local = gmaps.local_search(self.name + '  ' + self.city)
-            result = local['responseData']['results'][0]
-            lat,lng = gmaps.address_to_latlng(result['streetAddress'] + ' ,' + self.city)
-            self.latitude = lat
-            self.longitude = lng
-        except:
-            pass
+    # Returned places from a query are place summaries.
+            self.name = place.name
+            self.latitude =  place.geo_location['lat']
+            self.longitude = place.geo_location['lng']
+            self.address = place.streetAddress
+           
+
+    # The following method has to make a further API call
         super(Location, self).save()
     
 
