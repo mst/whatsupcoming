@@ -1,6 +1,8 @@
 from django.db import models
 from django_google_maps import fields as map_fields
 from geopy import geocoders
+from googlemaps import GoogleMaps
+
 
 class Location(models.Model):
     name = models.CharField(max_length="200")
@@ -10,22 +12,25 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     
     def save(self):
-        
-        g  = geocoders.Google(domain='maps.google.de') 
+           
         
         try:
-        # fist try venue name
-            place, (self.latitude, self.longitude) = g.geocode( self.name + ',' + self.city,exactly_one=False )[0]
+            gmaps = GoogleMaps('AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8')
+            local = gmaps.local_search(self.name + '  ' + self.city)
+            result = local['responseData']['results'][0]
+            lat,lng = gmaps.address_to_latlng(result['streetAddress'] + ' ,' + self.city)
+            self.latitude = lat
+            self.longitude = lng
         except:
-            place, (self.latitude, self.longitude) = g.geocode( self.address + ',' + self.city,exactly_one=False )[0]
-        else:
             pass
-        
         super(Location, self).save()
     
 
     def __unicode__(self):
 	return self.name + ", " + self.city
+
+
+        
 
 class Category(models.Model):
     name = models.CharField(max_length="200")
