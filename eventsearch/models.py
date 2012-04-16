@@ -6,14 +6,15 @@ class Location(models.Model):
     name = models.CharField(max_length="200")
     city = models.CharField(max_length="200", null=True)
     address = models.CharField(max_length="200",null=True)
-    latitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True,editable=False)
-
-    longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True,editable=False)
+    latitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
+    longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     
     def save(self):
         
         g  = geocoders.Google(domain='maps.google.de') 
-        place, (self.latitude, self.longitude) = g.geocode( self.address + ' ' + self.city )
+    
+        place, (self.latitude, self.longitude) = g.geocode( self.name + ',' + self.city,exactly_one=False )[0]
+        
         super(Location, self).save()
     
 
