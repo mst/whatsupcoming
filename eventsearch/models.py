@@ -22,14 +22,11 @@ class Location(models.Model):
             
             place = query_result.places[0]
         
-    # Returned places from a query are place summaries.
             self.name = place.name
             self.latitude =  place.geo_location['lat']
             self.longitude = place.geo_location['lng']
             
-           
 
-    # The following method has to make a further API call
         super(Location, self).save()
     
 
