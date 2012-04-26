@@ -1,0 +1,3 @@
+git+https://github.com/kerin/python-googleplaces.git
+lxml==2.3.4
+BeautifulSoup==3.2.1
