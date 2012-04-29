@@ -1,11 +1,11 @@
 INSTALL
 =======
 
-`` #install the SCM dependencies
+```  # install the SCM dependencies
 manage.py up
 
 # collect statics
-manage.py collectstatics``
+manage.py collectstatics```
 
 
 
