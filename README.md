@@ -1,3 +1,11 @@
-** Install Requirements **
+INSTALL
+=======
 
-PREFIX_PATH=~; pip install --install-option="--prefix=$PREFIX_PATH" -r requirements.txt
+> # install the SCM dependencies
+> manage.py up
+
+> # collect statics
+> manage.py collectstatics
+
+
+
