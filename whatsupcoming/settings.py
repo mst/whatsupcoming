@@ -1,11 +1,12 @@
  # Django settings for sup project.
+try:
+ import env_settings
+except:
+ pass
+
 import os
 import deps
 
-try:
- import evn_settings
-except:
- pass
 
 PROJECT_PATH = os.path.abspath('%s/..' % os.path.dirname(__file__))
 PROJECT_ROOT = PROJECT_PATH
