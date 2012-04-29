@@ -6,10 +6,9 @@ import deps
 
 # remove '.' from the path (you should use the project package to reference 
 # anything in here)
-sys.path.pop(0)
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, os.path.dirname(PROJECT_ROOT))
-print PROJECT_ROOT
+
 try:
     import whatsupcoming.settings
 except ImportError:

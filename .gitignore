@@ -10,3 +10,4 @@ dev.db
 **/*.swo
 **/*.pyc
 **/env_*
+external/**

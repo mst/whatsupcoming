@@ -16,7 +16,7 @@ TEMPLATE_DEBUG = DEBUG
 DEPDENDENCY_ROOT = os.path.join(PROJECT_PATH, 'external')
 
 DEPENDENCIES = (
-   deps.GIT('https://github.com/kerin/python-googleplaces', app_name='googleplaces', root=DEPDENDENCY_ROOT),
+   deps.GIT('https://github.com/slimkrazy/python-google-places.git', app_name='googleplaces', root=DEPDENDENCY_ROOT),
 )
 
 ADMINS = (
@@ -172,4 +172,3 @@ LOGGING = {
     }
 }
 
-print STATIC_ROOT
