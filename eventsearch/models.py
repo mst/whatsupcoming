@@ -1,3 +1,4 @@
+
 import logging
 from decimal import *
 from django.db import models
@@ -23,20 +24,18 @@ class Location(models.Model):
         location=self.city +', Germany', keyword=self.name,
         radius=20000)
         if query_result.has_attributions:
-            
-            
             place = query_result.places[0]
         
             self.name = place.name
             self.latitude = Decimal(str(place.geo_location['lat']))
             self.longitude = Decimal(str(place.geo_location['lng']))
             
-    	_logger.info("saving location %s" % self.__unicode__)
+    	_logger.info("saving location %s" % self.__unicode__())
         super(Location, self).save(*args, **kwargs)
     
 
     def __unicode__(self):
-	return "%s, %s, %s" % (self.name, self.city, self.address)
+	return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
 
 
 class Category(models.Model):
