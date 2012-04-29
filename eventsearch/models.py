@@ -1,4 +1,5 @@
 import logging
+from decimal import *
 from django.db import models
 from googleplaces import GooglePlaces, types
 
@@ -27,8 +28,8 @@ class Location(models.Model):
             place = query_result.places[0]
         
             self.name = place.name
-            self.latitude =  place.geo_location['lat']
-            self.longitude = place.geo_location['lng']
+            self.latitude = Decimal(place.geo_location['lat'])
+            self.longitude = Decimal(place.geo_location['lng'])
             
     	_logger.info("saving location %s" % self.__unicode__)
         super(Location, self).save(*args, **kwargs)
