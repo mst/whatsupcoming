@@ -7,7 +7,6 @@ except:
 import os
 import deps
 
-
 PROJECT_PATH = os.path.abspath('%s/..' % os.path.dirname(__file__))
 PROJECT_ROOT = PROJECT_PATH
 

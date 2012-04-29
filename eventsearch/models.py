@@ -1,10 +1,14 @@
+import logging
 from django.db import models
 from googleplaces import GooglePlaces, types
 
 YOUR_API_KEY = 'AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8'
-
+logging.basicConfig()
+_logger = logging.getLogger('models')
+_logger.setLevel(logging.INFO)
 
 class Location(models.Model):
+
     name = models.CharField(max_length="200")
     city = models.CharField(max_length="200", null=True)
     address = models.CharField(max_length="200",null=True)
@@ -12,6 +16,7 @@ class Location(models.Model):
     longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     
     def save(self, *args, **kwargs):
+
         query_result = ''
         query_result = GooglePlaces(YOUR_API_KEY).query(
         location=self.city +', Germany', keyword=self.name,
@@ -25,21 +30,20 @@ class Location(models.Model):
             self.latitude =  place.geo_location['lat']
             self.longitude = place.geo_location['lng']
             
-
+    	_logger.info("saving location %s" % self.__unicode__)
         super(Location, self).save(*args, **kwargs)
     
 
     def __unicode__(self):
-	return self.name + ", " + self.city
+	return "%s, %s, %s" % (self.name, self.city, self.address)
 
-
-        
 
 class Category(models.Model):
     name = models.CharField(max_length="200")
     def __unicode__(self):
         return self.name
     
+
 class Event(models.Model):
     name = models.CharField(max_length="200")
     date_start = models.DateTimeField('start date')
