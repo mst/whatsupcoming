@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-import whatsupcoming.env_settings
+try:
+  import whatsupcoming.env_settings
+except:
+  pass
+
 import os
 import sys
 import whatsupcoming
