@@ -1,5 +1,9 @@
 #!/usr/bin/python
 import os, sys
+try:
+  import whatsupcoming.env_settings
+except:
+  pass
 
 _PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, _PROJECT_DIR)
