@@ -11,7 +11,7 @@ class Location(models.Model):
     latitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     longitude = models.DecimalField(max_digits=30,decimal_places=26,blank=True)
     
-    def save(self):
+    def save(self, *args, **kwargs):
         query_result = ''
         query_result = GooglePlaces(YOUR_API_KEY).query(
         location=self.city +', Germany', keyword=self.name,
@@ -26,7 +26,7 @@ class Location(models.Model):
             self.longitude = place.geo_location['lng']
             
 
-        super(Location, self).save()
+        super(Location, self).save(*args, **kwargs)
     
 
     def __unicode__(self):
