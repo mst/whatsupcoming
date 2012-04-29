@@ -20,6 +20,7 @@ DEPENDENCIES = (
    deps.GIT('https://github.com/slimkrazy/python-google-places.git', app_name='googleplaces', root=DEPDENDENCY_ROOT, rev='master'),
 )
 
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
