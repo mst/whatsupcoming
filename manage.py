@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import whatsupcoming.env_settings
 import os
 import sys
 import whatsupcoming
