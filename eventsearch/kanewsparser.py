@@ -39,26 +39,29 @@ class KaNewsParser:
 	events = list()
 
 	for node in context:
-	    event = Event()
-	    event.name = node.xpath("./div[contains(@class, 'first ')]/a/text()")[0].strip()
-
-	    br_divided_div_text = "./div[@class='%s']/text()[%s-sibling::br]"
-	    loc_name = node.xpath(br_divided_div_text % ("second", "following"))[0].strip()
-	    loc_city = node.xpath(br_divided_div_text % ("second", "preceding"))[0].strip()
-	    _logger.info('found event %s at location %s, %s' % (event.name, loc_name, loc_city))
-	    location, created = Location.objects.get_or_create(name=loc_name, city=loc_city)
-
-	    event.location = location
-
-      	    date = node.xpath(br_divided_div_text % ("third", "following"))[0].strip()
-      	    time = node.xpath(br_divided_div_text % ("third", "preceding"))[0].strip()
-      	    event.date_start =  datetime.strptime(date + " " + time, "%d.%m.%Y %H:%M Uhr")
-	    event.save()
-      	    category_name = node.xpath("./div[@class='fourth']")[0].text_content().strip()
-      	    cat, created = Category.objects.get_or_create(name=category_name)
-            event.categories.add(cat)
-            event.save()
-	    events.append(event)
+	    try:
+                event = Event()
+                event.name = node.xpath("./div[contains(@class, 'first ')]/a/text()")[0].strip()
+                
+                br_divided_div_text = "./div[@class='%s']/text()[%s-sibling::br]"
+                loc_name = node.xpath(br_divided_div_text % ("second", "following"))[0].strip()
+                loc_city = node.xpath(br_divided_div_text % ("second", "preceding"))[0].strip()
+                _logger.info('found event %s at location %s, %s' % (event.name, loc_name, loc_city))
+                location, created = Location.objects.get_or_create(name=loc_name, city=loc_city)
+                
+                event.location = location
+                
+                date = node.xpath(br_divided_div_text % ("third", "following"))[0].strip()
+                time = node.xpath(br_divided_div_text % ("third", "preceding"))[0].strip()
+                event.date_start =  datetime.strptime(date + " " + time, "%d.%m.%Y %H:%M Uhr")
+                event.save()
+                category_name = node.xpath("./div[@class='fourth']")[0].text_content().strip()
+                cat, created = Category.objects.get_or_create(name=category_name)
+                event.categories.add(cat)
+                event.save()
+                events.append(event)
+            except:
+		_logger.warn("error importing node: %s" % etree.tostring(node))
 
         return events
 	    
