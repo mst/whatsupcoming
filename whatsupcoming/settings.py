@@ -1,7 +1,23 @@
  # Django settings for sup project.
-from env_settings import PROJECT_ROOT
+import os
+import deps
+
+try:
+ import evn_settings
+except:
+ pass
+
+PROJECT_PATH = os.path.abspath('%s/..' % os.path.dirname(__file__))
+PROJECT_ROOT = PROJECT_PATH
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+DEPDENDENCY_ROOT = os.path.join(PROJECT_PATH, 'external')
+
+DEPENDENCIES = (
+   deps.GIT('https://github.com/kerin/python-googleplaces', app_name='googleplaces', root=DEPDENDENCY_ROOT),
+)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -126,7 +142,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'eventsearch',
-    'django_google_maps'
+    'deps',
 )
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -155,3 +171,5 @@ LOGGING = {
         },
     }
 }
+
+print STATIC_ROOT

@@ -1,5 +1,4 @@
 from django.db import models
-from django_google_maps import fields as map_fields
 from googleplaces import GooglePlaces, types
 
 YOUR_API_KEY = 'AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8'
