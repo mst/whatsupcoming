@@ -61,8 +61,10 @@ class Location(models.Model):
         super(Location, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
+        return "%s, %s" % (self.name, self.city)
 
+            
+        
 class Category(models.Model):
     name = models.CharField(max_length="200")
     def __unicode__(self):
