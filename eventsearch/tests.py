@@ -5,7 +5,7 @@ from lxml.html.soupparser import parse
 
 class TestKaNewsParser(unittest.TestCase):
 
-    filename = 'kanews.html'
+    filename = 'eventsearch/kanews.html'
     
     def setUp(self):
 	self.parser = KaNewsParser()
