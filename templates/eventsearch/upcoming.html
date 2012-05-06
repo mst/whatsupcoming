@@ -1,57 +1,22 @@
+<!DOCTYPE html> 
 <html>
 <head>
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-	<style type="text/css">
-		body{padding:0px;
-			margin:4px;
-			background-color:#FFFFFF;
-			font-family: Verdana,Arial,Helvetica, sans-serif;
-				}
-				
-		ul {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-size: 12px;
-		font-style: normal;
-		line-height: 2em;
-		font-weight: normal;
-		font-variant: normal;
-		text-transform: none;
-		color: #E6E3FF	;
-		text-decoration: none;
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 		
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
 
-		text-indent: 5px;
-		list-style-position: outside;
-		list-style-image: url(arrow.gif);
-		list-style-type: none;
-		padding: 0px;
-		margin: 4px;
-		margin-left:0px;}
-		li {margin:2px;	
-			background-color: #003964		;
-			padding:	4px;}
-		a{
-			text-decoration:none;
-			color:#000000	;}
-		a:link{font-weight:bold;}	
-	  	a.eventlink {text-decoration: none;
-		font-weight:bold;
-		color: #E6E3FF	;}
-		div{display:none;}
-	</style>
 </head>
 <body >
-<img src="/static/logo.png"/>
-<div id="lat"></div>
-<div id="lon"></div>
-</br>
-<a id="showclose">Determining your location ...</a>
+<div data-role="header"> 
+	<h1>WhatsUpcoming</h1> 
+	<a id="showclose" data-icon="gear" class="ui-btn-right">gettingLoc</a>
+</div>
 
 {% if events %}
-<ul class="events">
+<ul data-role="listview" data-inset="true" data-filter="true">
   {% for e in events %}
-  <li class = "event" ><i><a class='eventlink' href="../event/{{ e.id }}" >{{ e }}</a></i>
-</br>
-
+  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true">{{ e }}</a>
  {%if e.days > 0%}
   {{ e.days }} days,
  {%endif %}
@@ -66,19 +31,19 @@
 {% else %}
 <p>No events upcoming</p>
 {% endif %}
-
+<div id="lat"></div>
+<div id="lon"></div>
 <script>
 
 
-navigator.geolocation.getCurrentPosition(GetLocation);
-function GetLocation(location) {
+navigator.geolocation.getCurrentPosition(whatsupGetLocation);
+function whatsupGetLocation(location) {
 	
 	document.getElementById("lat").innerHTML = location.coords.latitude;
     document.getElementById("lon").innerHTML =  location.coords.longitude;
 	
-	document.getElementById("showclose").innerHTML = "Show Events close to you";
+	document.getElementById("showclose").innerHTML = "C";
 	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-//	document.write("<a href='upcoming.html?P" + location.coords.latitude + "&" + location.coords.latitude + ">near you</a>");
 	
 }
 </script>

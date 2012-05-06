@@ -1,8 +1,24 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 		
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+</head>
+<body >
+
 {% if event %}
-<h1>{{ event.name }}</H1>
+<div data-role="header"> 
+	<h1>{{ event.name }}</H1>
+	<a data-icon="back" class="ui-btn-left" href="../../upcoming">back</a>
+</div>
+<div data-role="content">
 Start Date: {{ event.date_start }}</br>
 End Date: {{ event.date_end }}
 {% else %} 
 <p>No event</p>
 {% endif %}
-<a href="../../upcoming">back</a>
+</div>
+
