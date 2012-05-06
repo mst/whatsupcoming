@@ -61,8 +61,7 @@ class Location(models.Model):
     
 
     def __unicode__(self):
-        return self.name
-    #return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
+        return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
 
 class Category(models.Model):
     name = models.CharField(max_length="200")
