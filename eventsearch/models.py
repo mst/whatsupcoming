@@ -41,7 +41,7 @@ class Location(models.Model):
         return distance * self.milesPerNauticalMile * self.metersPerMile
     
     def save(self, *args, **kwargs):
-
+        # look up google places for geo location
         query_result = ''
         self.address = smart_str(self.address)
         self.city = smart_str(self.city)
@@ -58,7 +58,6 @@ class Location(models.Model):
             
     	_logger.info("saving location %s" % self.__unicode__())
         super(Location, self).save(*args, **kwargs)
-    
 
     def __unicode__(self):
         return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
@@ -68,6 +67,10 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
     
+
+class EventManager(models.Manager):
+    def with_distance_to(self, latitude, longitude):
+        return sorted(all(), key=lambda event:event.distance(lat,lon))
 
 class Event(models.Model):
     name = models.CharField(max_length="200")
@@ -84,9 +87,3 @@ class Event(models.Model):
 
     class Meta:
         ordering = ["date_start"]
-
-    @classmethod
-    def find_closest(self, lat, lon, limit=25):
-        events = Event.objects.all()
-        return sorted(events, key=lambda event:event.distance(lat,lon))
-
