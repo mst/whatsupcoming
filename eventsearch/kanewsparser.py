@@ -7,7 +7,9 @@ from models import Location
 from datetime import datetime
 from lxml import etree
 from lxml.html.soupparser import fromstring
+from eventsearch.parsing.google_places import GooglePlacesLookup
 import time
+
 
 logging.basicConfig()
 _logger = logging.getLogger('ka-news-parser')
@@ -47,8 +49,13 @@ class KaNewsParser:
                 loc_name = node.xpath(br_divided_div_text % ("second", "following"))[0].strip()
                 loc_city = node.xpath(br_divided_div_text % ("second", "preceding"))[0].strip()
                 _logger.info('found event %s at location %s, %s' % (event.name, loc_name, loc_city))
-                location, created = Location.objects.get_or_create(name=loc_name, city=loc_city)
+
+                (loc_name, lat, lon) = GooglePlacesLookup.find_geo_data_for_venue(loc_name, loc_city)
+                location, created = Location.objects.get_or_create(name=loc_name, city=loc_city, latitude=lat, longitude=lon)
                 
+                if created:
+                    _logger.info("created new location %s" % location.__unicode__())
+
                 event.location = location
                 
                 date = node.xpath(br_divided_div_text % ("third", "following"))[0].strip()
@@ -59,9 +66,11 @@ class KaNewsParser:
                 cat, created = Category.objects.get_or_create(name=category_name)
                 event.categories.add(cat)
                 event.save()
-                events.append(event)
-            except:
-		_logger.warn("error importing node: %s" % etree.tostring(node))
+
+                if created:
+                    events.append(event)
+            except Exception, err:
+		_logger.exception("error importing node: %s" % etree.tostring(node))
 
         return events
 	    
