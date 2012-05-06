@@ -18,9 +18,16 @@ pip install -r requirements.txt
 ./manage.py collectstatics
 ```
 
-When working on the project, it is advisable to always switch to the virtual
-environment with
+Before working on the project, switch to the virtual environment with
 
 ```
 source venv/bin/activate
+```
+
+
+IPython and MacOS
+===
+To get around the readline issues with IPython and MacOS, install readline in your virtual env with
+```
+easy_install -a readline
 ```
