@@ -4,5 +4,5 @@ distribute==0.6.24
 django-dependency==1.1
 lxml==2.3.4
 psycopg2==2.4.5
-python-google-places==0.8.0
+-e git+https://github.com/slimkrazy/python-google-places.git@42fdd5041ec80f018aa7ab9dabe40b983c4ef38f#egg=python_google_places-dev
 wsgiref==0.1.2
