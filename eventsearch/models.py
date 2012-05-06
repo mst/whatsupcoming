@@ -42,6 +42,7 @@ class Location(models.Model):
     
     def save(self, *args, **kwargs):
         # look up google places for geo location
+        
         query_result = ''
         self.address = smart_str(self.address)
         self.city = smart_str(self.city)
