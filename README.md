@@ -1,9 +1,15 @@
 INSTALL
 =======
 
+
+In the projects root folder, execute:
+
 ``` bash
-# install the SCM dependencies
-./manage.py up
+# create a virtual environment for the python dependencies:
+virtualenv venv --distribute
+
+# let pip install the requirements
+pip install -r requirements.txt
 
 # collect statics
 ./manage.py collectstatics
