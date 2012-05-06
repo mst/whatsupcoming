@@ -11,3 +11,4 @@ dev.db
 **/*.pyc
 **/env_*
 external/**
+venv

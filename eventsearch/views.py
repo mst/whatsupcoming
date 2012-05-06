@@ -11,7 +11,7 @@ def upcoming(request):
 	    event.remaining = event.date_start.replace(tzinfo=None) - datetime.utcnow().replace(tzinfo=None)
 	    event.days = event.remaining.days	    
 	    event.minutes = event.remaining.seconds/60
-            event.distance_view = round(event.distance(float(request.GET.get('lat')), float(request.GET.get('lon'))))
+            event.distance_view = int(round(event.distance(float(request.GET.get('lat')), float(request.GET.get('lon')))))
     except Event.DoesNotExist:
         raise Http404
     return render_to_response('eventsearch/upcoming.html', {'events': events})
