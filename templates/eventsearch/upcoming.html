@@ -52,10 +52,13 @@
   <li class = "event" ><i><a class='eventlink' href="../event/{{ e.id }}" >{{ e }}</a></i>
 </br>
 
-    {% if e.days > 0%}
-      {{ e.days }} days,
-    {% endif %}
-    {{ e.minutes }} minutes left, {{ e.distance_view }} m
+ {%if e.days > 0%}
+  {{ e.days }} days,
+ {%endif %}
+  {{ e.minutes }} minutes left
+ {%if e.distance_view != nil  %}
+  , {{ e.distance_view }} m
+ {%endif%}
 
   </li>
   {% endfor %}
