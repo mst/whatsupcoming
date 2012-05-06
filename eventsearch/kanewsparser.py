@@ -8,6 +8,7 @@ from datetime import datetime
 from lxml import etree
 from lxml.html.soupparser import fromstring
 from eventsearch.parsing.google_places import GooglePlacesLookup
+from eventsearch.parsing.helper import *
 import time
 
 
@@ -15,7 +16,7 @@ logging.basicConfig()
 _logger = logging.getLogger('ka-news-parser')
 _logger.setLevel(logging.INFO)
 
-class KaNewsParser:
+class KaNewsParser(EventParserHelper):
     """ parses a page in on kanews.de's events page. """
     """ The events page is paginated, starting from page 0, call  """
     """ events = parser.events_for_page(0) to retrieve the events objects """
@@ -65,10 +66,10 @@ class KaNewsParser:
                 category_name = node.xpath("./div[@class='fourth']")[0].text_content().strip()
                 cat, created = Category.objects.get_or_create(name=category_name)
                 event.categories.add(cat)
-                event.save()
 
-                if created:
-                    events.append(event)
+                if not self.is_duplicate_event(event):
+                    event.save()
+
             except Exception, err:
 		_logger.exception("error importing node: %s" % etree.tostring(node))
 
