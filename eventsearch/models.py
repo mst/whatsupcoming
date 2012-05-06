@@ -3,6 +3,7 @@ from decimal import *
 from django.db import models
 from googleplaces import GooglePlaces, types
 from string import Template
+from django.utils.encoding import smart_str, smart_unicode
 import math
 
 YOUR_API_KEY = 'AIzaSyDsaRhBz8WhZICkiElokU9XitMWRkIFxL8'
@@ -42,6 +43,9 @@ class Location(models.Model):
     def save(self, *args, **kwargs):
 
         query_result = ''
+        self.address = smart_str(self.address)
+        self.city = smart_str(self.city)
+        self.name = smart_str(self.name)
         query_result = GooglePlaces(YOUR_API_KEY).query(
         location=self.city +', Germany', keyword=self.name,
         radius=20000)
@@ -57,8 +61,8 @@ class Location(models.Model):
     
 
     def __unicode__(self):
-	return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
-
+        return self.name
+    #return "%s, %s, %f, %f" % (self.name, self.city, self.latitude, self.longitude)
 
 class Category(models.Model):
     name = models.CharField(max_length="200")
@@ -74,7 +78,7 @@ class Event(models.Model):
     location = models.ForeignKey(Location)
 
     def __unicode__(self):
-	return self.name + " at " + self.location.__unicode__()
+        return self.name + " at " + self.location.__unicode__()
 
     def distance(self, lat, lon):
         return self.location.distance(lat, lon)
