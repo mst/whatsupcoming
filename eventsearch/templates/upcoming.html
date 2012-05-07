@@ -46,8 +46,7 @@ function whatsupGetLocation(location) {
 	
 	document.getElementById("showclose").innerHTML = "C";
 	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-	$.cookie('lat', location.coords.latitude);
-	$.cookie('lon', location.coords.longitude);
+
 	
 	
 }
