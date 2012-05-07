@@ -51,7 +51,10 @@ class KaNewsParser(EventParserHelper):
                 loc_city = node.xpath(br_divided_div_text % ("second", "preceding"))[0].strip()
                 _logger.info('found event %s at location %s, %s' % (event.name, loc_name, loc_city))
 
-                (loc_name, lat, lon) = GooglePlacesLookup.find_geo_data_for_venue(loc_name, loc_city)
+		geodata = GooglePlacesLookup.find_geo_data_for_venue(loc_name, loc_city)
+		loc_name = geodata['name']
+		lat = geodata['lat']
+		lon = geodata['lon']
                 location, created = Location.objects.get_or_create(name=loc_name, city=loc_city, latitude=lat, longitude=lon)
                 
                 if created:
