@@ -36,11 +36,8 @@
 <div id="lon"></div>
 <script>
 
-if ($.cookie('lat') && $.cookie('lon')){
-	document.getElementById("showclose").innerHTML = "C";
-	document.getElementById("showclose").href = "../upcoming/?lat=	" + $.cookie('lat') + "&lon=" + $.cookie('lon');
-	
-}else{
+
+
 navigator.geolocation.getCurrentPosition(whatsupGetLocation);
 function whatsupGetLocation(location) {
 	
@@ -53,7 +50,7 @@ function whatsupGetLocation(location) {
 	$.cookie('lon', location.coords.longitude);
 	
 	
-}}
+}
 </script>
 </body>
 </html>
