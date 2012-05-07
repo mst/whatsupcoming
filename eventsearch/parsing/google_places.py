@@ -34,3 +34,5 @@ class GooglePlacesLookup():
 
 
 	return {"name":name, 'lat':latitude, 'lon':longitude}
+
+
