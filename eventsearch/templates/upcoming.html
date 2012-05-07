@@ -17,7 +17,7 @@
 {% if events %}
 <ul data-role="listview" data-inset="true" data-filter="true">
   {% for e in events %}
-  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true"><h1>{{ e }}</h1><p>
+  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true">{ e }}
  {%if e.days > 0%}
   {{ e.days }} days,
  {%endif %}
@@ -25,8 +25,7 @@
  {%if e.distance_view != nil  %}
   , {{ e.distance_view }} m
  {%endif%}
-
-  </p></a></li>
+</li>
   {% endfor %}
 </ul>
 {% else %}
