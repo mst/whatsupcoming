@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	<script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
 
 </head>
 <body >
@@ -36,7 +37,11 @@
 <div id="lon"></div>
 <script>
 
-
+if ($.cookie('lat') && $.cookie('lon')){
+	document.getElementById("showclose").innerHTML = "C";
+	document.getElementById("showclose").href = "../upcoming/?lat=	" + $.cookie('lat') + "&lon=" + $.cookie('lon');
+	
+}else{
 navigator.geolocation.getCurrentPosition(whatsupGetLocation);
 function whatsupGetLocation(location) {
 	
@@ -45,8 +50,11 @@ function whatsupGetLocation(location) {
 	
 	document.getElementById("showclose").innerHTML = "C";
 	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
+	$.cookie('lat', location.coords.latitude);
+	$.cookie('lon', location.coords.longitude);
 	
-}
+	
+}}
 </script>
 </body>
 </html>
