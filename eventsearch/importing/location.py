@@ -1,5 +1,6 @@
 import logging
 from googleplaces import GooglePlaces, types
+
 from django.utils.encoding import smart_str
 from decimal import Decimal
 

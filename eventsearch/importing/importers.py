@@ -1,13 +1,15 @@
 import logging
 import urllib
 from urllib import URLopener
-from models import *
+from eventsearch.models import *
 from datetime import datetime
 from lxml import etree
 from lxml.html.soupparser import fromstring
 from eventsearch.importing.location import GooglePlacesLookup
 from eventsearch.importing.helper import *
 import time
+import locale
+import calendar
 
 logging.basicConfig()
 _logger = logging.getLogger('ka-news-parser')
@@ -77,3 +79,44 @@ class KaNewsImporter(EventImportHelper):
 		_logger.exception("error importing node: %s" % etree.tostring(node))
         return events
     
+
+class StaatstheaterKarlsruheDeImporter(EventImportHelper):
+
+    _base_url = "http://www.staatstheater.karlsruhe.de/spielplan/"
+
+    locale.setlocale(locale.LC_ALL, "de_DE")
+    _months = [month.replace('\xc3\xa4', 'ae').lower() for month in calendar.month_name]
+
+    def _get_html(self, url):
+	return urllib.urlopen(url).read()        
+
+    def import_month(self, month=1):
+        html = self._get_html(self._base_url + self._months[month])
+	tree = fromstring(html)
+	boxes = self._find_contentboxes(tree)
+        current_day = None
+        for node in boxes:
+            day_node = node.xpath("div[@class ='spielplan_day']")
+            _title = None
+
+            if len(day_node) > 0:
+                _current_day = day_node[0].text_content()
+
+            time = node.xpath("div[@class ='spielplan_date']")
+            if len(time) > 0:
+                _time = time[0].text_content()
+
+            title = node.xpath("div[@class='spielplan_content']/*/a[contains(@href,'programm')]")
+            if (len(title) > 0):
+                _title = title[0].text_content()
+
+            house = node.xpath("*/span[@class='ort']") 
+            if len(house) > 0:
+                _house = house[0].text_content()
+
+            if _title != None:
+                print _title, _current_day, _time, _house
+
+    def _find_contentboxes(self, tree):
+	day_context = tree.xpath("//div[@class = 'spielplan contentBox']")
+	return day_context
