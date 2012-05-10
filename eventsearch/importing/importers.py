@@ -173,7 +173,7 @@ class KaNightLife(EventImportHelper):
             time = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr/td[2]/font[1]/text()")[0]
             event.date_start = datetime.strptime(time, "%H:%M Uhr")
             event.date_start = event.date_start.replace(year=year, day=day, month=month)
-            venue = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr[2]/td[2]/font/descendant::a[contains(@href, 'location')]/text()")[0]
+            venue = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr[2]/td[2]/font/descendant::text()")[0]
             address = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr[2]/td[2]/text()[preceding-sibling::br]")[0].strip()
             p = re.search(".*[0-9]{5} (.*)$", address)
             city = p.group(1)
