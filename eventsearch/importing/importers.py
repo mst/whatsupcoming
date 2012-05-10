@@ -84,8 +84,8 @@ class KaNewsImporter(EventImportHelper):
 class StaatstheaterKarlsruheDeImporter(EventImportHelper):
 
     _base_url = "http://www.staatstheater.karlsruhe.de/spielplan/"
-    locale.setlocale(locale.LC_ALL, "de_DE")
-    _months = [month.replace('\xc3\xa4', 'ae').lower() for month in calendar.month_name]
+    monthnames = ['januar', 'februar', 'maerz', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'dezember']
+    _months = [month.replace('\xc3\xa4', 'ae').lower() for month in monthnames]
 
     LOCATION = Location()
 
@@ -111,18 +111,19 @@ class StaatstheaterKarlsruheDeImporter(EventImportHelper):
             event = Event()
 
             if len(day_node) > 0:
-                _current_day = day_node[0].text_content() + str(datetime.now().year)
+                _current_day = day_node[0].text_content().split(", ")[1] + str(datetime.now().year)
             
             time = node.xpath("div[@class ='spielplan_date']")
             if len(time) > 0:
                 try:
                     p = re.compile(u"\xa0?-")
                     (start, end) = p.split(time[0].text_content())
-                    event.date_end = datetime.strptime(_current_day + " " + end, "%A, %d.%m.%Y %H:%M")
+                    print _current_day, start, end
+                    event.date_end = datetime.strptime(_current_day + " " + end, "%d.%m.%Y %H:%M")
                 except ValueError, err:
                     start = time[0].text_content()
 
-                event.date_start = datetime.strptime(_current_day + " " + start, "%A, %d.%m.%Y %H:%M")
+                event.date_start = datetime.strptime(_current_day + " " + start, "%d.%m.%Y %H:%M")
                 
 
             title = node.xpath("div[@class='spielplan_content']/*/a[contains(@href,'programm')]")
