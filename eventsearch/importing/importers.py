@@ -82,7 +82,6 @@ class KaNewsImporter(EventImportHelper):
     
 
 class StaatstheaterKarlsruheDeImporter(EventImportHelper):
-
     _base_url = "http://www.staatstheater.karlsruhe.de/spielplan/"
     monthnames = ['januar', 'februar', 'maerz', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'dezember']
     _months = [month.replace('\xc3\xa4', 'ae').lower() for month in monthnames]
@@ -144,3 +143,47 @@ class StaatstheaterKarlsruheDeImporter(EventImportHelper):
     def _find_contentboxes(self, tree):
 	day_context = tree.xpath("//div[@class = 'spielplan contentBox']")
 	return day_context
+
+def slugify(value):
+    """
+    Normalizes string, converts to lowercase, removes non-alpha characters,
+    and converts spaces to hyphens.
+    """
+    import unicodedata
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    return value
+
+class KaNightLife(EventImportHelper):
+    
+    def _url(self, d,m,y): 
+        return "http://www.kanightlife.de/events.php?day=%d&month=%d&year=%d&sid=&x=%d" % (d,m,y,d)
+
+    def _get_html(self, url):
+	return urllib.urlopen(url).read()        
+
+    def import_day(self, day, month, year):
+        tree = fromstring(self._get_html(self._url(day, month, year)))
+
+        titlenodes = tree.xpath("//td[@class='size2']/font[@color='#CD076A']/b")
+
+
+        for titlenode in titlenodes:
+            event = Event()            
+            event.name = titlenode.text_content()
+            time = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr/td[2]/font[1]/text()")[0]
+            event.date_start = datetime.strptime(time, "%H:%M Uhr")
+            event.date_start = event.date_start.replace(year=year, day=day, month=month)
+            venue = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr[2]/td[2]/font/descendant::a[contains(@href, 'location')]/text()")[0]
+            address = titlenode.xpath("./ancestor::table/parent::td/table[2]/tr[2]/td[2]/text()[preceding-sibling::br]")[0].strip()
+            p = re.search(".*[0-9]{5} (.*)$", address)
+            city = p.group(1)
+
+            geodata = GooglePlacesLookup.find_geo_data_for_venue(venue, city)
+            venue  = geodata['name']
+            lat = geodata['lat']
+            lon = geodata['lon']
+            location, created = Location.objects.get_or_create(name=venue, city=city, latitude=lat, longitude=lon)
+
+            event.location = location
+            if not self.is_duplicate_event(event):
+                event.save()
