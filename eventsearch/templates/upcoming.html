@@ -17,7 +17,7 @@
 {% if events %}
 <ul data-role="listview" data-inset="true" data-filter="true">
   {% for e in events %}
-  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true">{{ e }}
+  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true">{{ e.location.name}}, {{ e.name }}
  {%if e.days > 0%}
   {{ e.days }} days,
  {%endif %}
