@@ -9,6 +9,7 @@ from eventsearch.importing.location import GooglePlacesLookup
 from eventsearch.importing.helper import *
 import time
 import locale
+import re
 import calendar
 
 logging.basicConfig()
@@ -83,39 +84,61 @@ class KaNewsImporter(EventImportHelper):
 class StaatstheaterKarlsruheDeImporter(EventImportHelper):
 
     _base_url = "http://www.staatstheater.karlsruhe.de/spielplan/"
-
     locale.setlocale(locale.LC_ALL, "de_DE")
     _months = [month.replace('\xc3\xa4', 'ae').lower() for month in calendar.month_name]
 
+    LOCATION = Location()
+
     def _get_html(self, url):
 	return urllib.urlopen(url).read()        
+
+
+    def __init__(self):
+        geodata = GooglePlacesLookup.find_geo_data_for_venue("Badisches Staatsthater", "Karlsruhe")
+        loc_name = geodata['name']
+        lat = geodata['lat']
+        lon = geodata['lon']
+        self.LOCATION, created = Location.objects.get_or_create(name=loc_name, city="Karlsruhe", latitude=lat, longitude=lon)
 
     def import_month(self, month=1):
         html = self._get_html(self._base_url + self._months[month])
 	tree = fromstring(html)
 	boxes = self._find_contentboxes(tree)
         current_day = None
+
         for node in boxes:
             day_node = node.xpath("div[@class ='spielplan_day']")
-            _title = None
+            event = Event()
 
             if len(day_node) > 0:
-                _current_day = day_node[0].text_content()
-
+                _current_day = day_node[0].text_content() + str(datetime.now().year)
+            
             time = node.xpath("div[@class ='spielplan_date']")
             if len(time) > 0:
-                _time = time[0].text_content()
+                try:
+                    p = re.compile(u"\xa0?-")
+                    (start, end) = p.split(time[0].text_content())
+                    event.date_end = datetime.strptime(_current_day + " " + end, "%A, %d.%m.%Y %H:%M")
+                except ValueError, err:
+                    start = time[0].text_content()
+
+                event.date_start = datetime.strptime(_current_day + " " + start, "%A, %d.%m.%Y %H:%M")
+                
 
             title = node.xpath("div[@class='spielplan_content']/*/a[contains(@href,'programm')]")
             if (len(title) > 0):
                 _title = title[0].text_content()
+                event.name = " ".join([word.capitalize().strip() for word in _title.split(" ")])
 
             house = node.xpath("*/span[@class='ort']") 
             if len(house) > 0:
                 _house = house[0].text_content()
 
-            if _title != None:
-                print _title, _current_day, _time, _house
+            event.location = self.LOCATION
+                
+            if event.name != None and not self.is_duplicate_event(event):
+                _logger.info("Found event %s" % str(event))
+                event.save()
 
     def _find_contentboxes(self, tree):
 	day_context = tree.xpath("//div[@class = 'spielplan contentBox']")
