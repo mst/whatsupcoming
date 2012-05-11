@@ -10,7 +10,7 @@
 <body >
 <div data-role="header"> 
 	<h1>WhatsUpcoming</h1> 
-	<a id="showclose" data-icon="gear" class="ui-btn-right">gettingLoc</a>
+	<a id="showclose" data-icon="forward">sort</a>
 </div>
 
 {% if events %}
@@ -31,20 +31,18 @@
 {% else %}
 <p>No events upcoming</p>
 {% endif %}
-<div id="lat"></div>
-<div id="lon"></div>
+<div id="lat" display="none"></div>
+<div id="lon" display="none"></div>
 <script>
-
 
 navigator.geolocation.getCurrentPosition(whatsupGetLocation);
 function whatsupGetLocation(location) {
 	
-	document.getElementById("lat").innerHTML = location.coords.latitude;
-    document.getElementById("lon").innerHTML =  location.coords.longitude;
+
 	
-	document.getElementById("showclose").innerHTML = "C";
-	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-	
+	document.getElementById("showclose").innerHTML = "Sort";
+	document.getElementById("showclose").href = "../upcoming/?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude;
+	window.location ="../upcoming/?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude;"
 }
 </script>
 </body>
