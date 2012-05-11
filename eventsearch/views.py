@@ -6,7 +6,7 @@ from datetime import datetime
 
 def upcoming(request):
     try:
-        events = Event.objects.all() # filter(date_start__gt=datetime.now())
+        events = Event.objects.filter(date_start__gt=datetime.now())
 	for event in events:
 	    event.remaining = event.date_start.replace(tzinfo=None) - datetime.utcnow().replace(tzinfo=None)
 	    event.days = event.remaining.days	    
@@ -17,11 +17,11 @@ def upcoming(request):
                     event.distance_view = int(round(distance))
     except Event.DoesNotExist:
         raise Http404
-    return render_to_response('eventsearch/upcoming.html', {'events': events})
+    return render_to_response('upcoming.html', {'events': events})
 
 def detail(request,event_id):
     e = get_object_or_404(Event, pk=event_id)
-    return render_to_response('eventsearch/detail.html',{'event' : e})
+    return render_to_response('detail.html',{'event' : e})
 
     
     

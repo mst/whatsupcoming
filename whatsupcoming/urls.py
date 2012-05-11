@@ -5,7 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns("eventsearch.views",
-		       url(r'^upcoming', 'upcoming'),
+                       url(r'^$', 'upcoming'),
+                       url(r'^upcoming', 'upcoming'),
                        url(r'^upcoming/(?P<latitude>&<longitude>\d+)/$', 'upcoming'),
                        url(r'^event/(?P<event_id>\d+)/$', 'detail')
 )

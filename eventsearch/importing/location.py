@@ -1,5 +1,6 @@
 import logging
 from googleplaces import GooglePlaces, types
+
 from django.utils.encoding import smart_str
 from decimal import Decimal
 
@@ -20,6 +21,9 @@ class GooglePlacesLookup():
 	    location=city +', Germany', keyword=name,
 	    radius=20000)
 
+        latitude = None
+        longitude = None
+
 	if query_result.has_attributions:
 	    place = query_result.places[0]
 	    
@@ -29,6 +33,7 @@ class GooglePlacesLookup():
 	    latitude = Decimal(str(place.geo_location['lat']))
 	    longitude = Decimal(str(place.geo_location['lng']))
 
-	    return (name, latitude, longitude)
-	else:
-	    return (name, None, None)
+        
+        return {"name":name, 'lat':latitude, 'lon':longitude}
+	
+
