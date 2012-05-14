@@ -4,19 +4,27 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-		
-
 		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
 		<script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
 		{% block js %}
-    	
 		<script >
-				var endless_on_scroll_margin = 20; (function($) {
+			navigator.geolocation.getCurrentPosition(whatsupGetLocation);
+			function whatsupGetLocation(location) {
+
+				//  document.getElementById("lat").innerHTML = location.coords.latitude;
+				//  document.getElementById("lon").innerHTML =  location.coords.longitude;
+
+				document.getElementById("showclose").innerHTML = "C";
+				document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
+
+			}
+
+			var endless_on_scroll_margin = 20;
+			(function($) {
+
 				$(document).ready(function() {
-					$(".ui-li").swiperight(function() {
-					$(this).fadeOut(300, function() { $(this).remove();
-					$(document).scroll(); }) }); 
+
 					$("a.endless_more").live("click", function() {
 						var container = $(this).closest(".endless_container");
 						var loading = container.find(".endless_loading");
@@ -26,8 +34,13 @@
 						$.get($(this).attr("href"), data, function(data) {
 							container.before(data);
 							container.remove();
-						});
-						$('ul').listview('refresh');
+							$('ul').listview('refresh');
+							$(".ui-li").swiperight(function() {
+								$(this).fadeOut(300, function() {
+									$(this).remove();
+								})
+							});
+						}); 	
 						return false;
 					});
 					$("a.endless_page_link").live("click", function() {
@@ -35,38 +48,42 @@
 						if(!page_template.hasClass("endless_page_skip")) {
 							var data = "querystring_key=" + $(this).attr("rel").split(" ")[0];
 							page_template.load($(this).attr("href"), data);
-							$('ul').listview('refresh');
-							$(".ui-li").swiperight(function() {
-							$(this).fadeOut(300, function() { $(this).remove();
-							$(document).scroll(); }) }); 
+
 							return false;
 						};
 					});
 				});
-			})(jQuery); (function($) {
+			})(jQuery);
+			(function($) {
 				$(document).ready(function() {
-					$('ul').listview('refresh');
-					$(".ui-li").swiperight(function() {
-					$(this).fadeOut(300, function() { $(this).remove();
-				}) }); 
+
 					var margin = 1;
 					if( typeof endless_on_scroll_margin != 'undefined') {
 						margin = endless_on_scroll_margin;
 					};
 					$(window).scroll(function() {
-						$('ul').listview('refresh');
+
 						if($(document).height() - $(window).height() - $(window).scrollTop() <= margin) {
 							$("a.endless_more").click();
-							$('ul').listview('refresh');
 						}
 					});
 				});
 			})(jQuery);
-			$(".ui-li").swiperight(function() { $(this).fadeOut(300, function() { $(this).remove(); }) });
+			
+$("ul").listview({
+  autodividers: true,
+
+  // the selector function is passed a <li> element from the listview;
+  // it should return the appropriate divider text for that <li>
+  // element as a string
+  autodividersSelector: function ( li ) {
+    var out = "Test";
+    return out;
+  }
+});
 
 		</script>
 		{% endblock %}
-    
 		<style type="text/css">
 			div {
 				font: bold 10pt;
@@ -92,18 +109,5 @@
 		</div>
 		<!--div id="lat"></div>
 		<div id="lon"></div-->
-		<script>
-
-			navigator.geolocation.getCurrentPosition(whatsupGetLocation);
-			function whatsupGetLocation(location) {
-
-				//  document.getElementById("lat").innerHTML = location.coords.latitude;
-				//  document.getElementById("lon").innerHTML =  location.coords.longitude;
-
-				document.getElementById("showclose").innerHTML = "C";
-				document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-
-			}
-		</script>
 	</body>
 </html>
