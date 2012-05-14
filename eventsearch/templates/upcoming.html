@@ -1,69 +1,67 @@
 <!DOCTYPE html> 
 <html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 		
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-	<script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 		
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+    <script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
+    <style type="text/css">
+      div {
+      font: bold 10pt;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-role="header">
+      <h1>WhatsUpcoming</h1> 
+      <a id="showclose" data-icon="gear" class="ui-btn-right">gettingLoc</a>
+    </div>
+    <div data-role="content">
+      {% if events %}
+      <ul data-role="listview" data-split-theme="a">
+	<!--ul data-role="listview" data-inset="true" data-filter="true"-->
+	{% for e in events %}
+	<li>
+	  <a href="../event/{{ e.id }}" rel="external" data-ajax="true">
+	    <h3>{{ e.location.name }}</h3>
+	    <p style="font-weight:bold; font-size:10pt">
+	      {{ e.name }}	      
+	    </p>
+	    <p>	
+	      {% if e.days > 0 %}
+	      {{ e.days }} days,
+	      {% endif %}
+	      {{ e.minutes }} minutes left
+	    </p>
+	    <p>
+	      {% if e.distance_view != nil  %}
+	      {{ e.distance_view }} m
+	      {%endif%}
+	    </p>
+	  </a>
+	</li>
+	{% endfor %}
+      </ul>
+      {% else %}
+      <p>No events upcoming</p>
+      {% endif %}
+    </div>
+    <!--div id="lat"></div>
+	<div id="lon"></div-->
 
-</head>
-<body >
-<div data-role="header"> 
-	<h1>WhatsUpcoming</h1> 
-	<a id="showclose" data-icon="forward">sort</a>
-</div>
-<div data-role="content">
-{% if events %}
-<ul data-role="listview" data-inset="true" data-filter="true">
-  {% for e in events %}
-  <li ><a  href="../event/{{ e.id }}" rel="external" data-ajax="true">{{ e }}
- {%if e.days > 0%}
-  {{ e.days }} days,
- {%endif %}
-  {{ e.minutes }} minutes left
- {%if e.distance_view != nil  %}
-  , {{ e.distance_view }} m
-  {%endif%}</a>
-</li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No events upcoming</p>
-{% endif %}
-<<<<<<< HEAD:templates/eventsearch/upcoming.html
-<div id="lat" display="none"></div>
-<div id="lon" display="none"></div>
-<script>
-
-navigator.geolocation.getCurrentPosition(whatsupGetLocation);
-function whatsupGetLocation(location) {
-	
-
-=======
-</div>
-<div id="lat"></div>
-<div id="lon"></div>
-<script>
-
-
-
-navigator.geolocation.getCurrentPosition(whatsupGetLocation);
-function whatsupGetLocation(location) {
-	
-	document.getElementById("lat").innerHTML = location.coords.latitude;
-    document.getElementById("lon").innerHTML =  location.coords.longitude;
-	
-	document.getElementById("showclose").innerHTML = "C";
-	document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-
-	
->>>>>>> 53954f2c65a8c2c8492c3478ff25b200f667e519:eventsearch/templates/upcoming.html
-	
-	document.getElementById("showclose").innerHTML = "Sort";
-	document.getElementById("showclose").href = "../upcoming/?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude;
-	window.location ="../upcoming/?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude;"
-}
-</script>
-</body>
+    <script>
+      
+      navigator.geolocation.getCurrentPosition(whatsupGetLocation);
+      function whatsupGetLocation(location) {
+      
+      //  document.getElementById("lat").innerHTML = location.coords.latitude;
+      //  document.getElementById("lon").innerHTML =  location.coords.longitude;
+      
+      document.getElementById("showclose").innerHTML = "C";
+      document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
+      
+      }
+    </script>
+  </body>
 </html>
