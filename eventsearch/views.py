@@ -16,10 +16,10 @@ def upcoming(request,
 	    event.remaining = event.date_start.replace(tzinfo=None) - datetime.utcnow().replace(tzinfo=None)
 	    event.days = event.remaining.days	    
 	    event.minutes = event.remaining.seconds/60
-        if ('lat' and 'lon') in request.GET.keys():
-            distance = event.distance(float(request.GET.get('lat')), float(request.GET.get('lon')))
-            if (distance != None):
-                event.distance_view = int(round(distance))
+            if ('lat' and 'lon') in request.GET.keys():
+                distance = event.distance(float(request.GET.get('lat')), float(request.GET.get('lon')))
+                if (distance != None):
+                    event.distance_view = int(round(distance))
     except Event.DoesNotExist:
         raise Http404
     context = {

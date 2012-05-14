@@ -11,12 +11,14 @@
 
 {% if event %}
 <div data-role="header"> 
-	<h1>{{ event.name }}</H1>
+	<h1>WhatsUpcoming</H1>
 	<a data-icon="back" class="ui-btn-left" href="javascript:window.history.back();">back</a>
 </div>
-<div data-role="content">
+<div data-role="content">http://127.0.0.1:8000/event/5
+Name: {{event.name}}</br>
+Location: {{event.location}}</br>
 Start Date: {{ event.date_start }}</br>
-End Date: {{ event.date_end }}
+End Date: {{ event.date_end }}</br>
 {% else %} 
 <p>No event</p>
 {% endif %}

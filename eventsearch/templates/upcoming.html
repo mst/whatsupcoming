@@ -8,7 +8,7 @@
 
 		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-		<script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
+		<script src="https://raw.github.com/carhartl/jquery-cookie/master/jquery.cookie.js"></script>
 		{% block js %}
     	
 		<script >
@@ -19,7 +19,7 @@
 						var loading = container.find(".endless_loading");
 						$(this).hide();
 						loading.show();
-						var data = "querystring_key=" + $(this).attr("rel").split(" ")[0];
+						var data = "querystring_key=" + $(this).attr("rel").split(" ")[0] + "&lat=" + $.cookie('lat') + "&lon=" + $.cookie('lon');
 						$.get($(this).attr("href"), data, function(data) {
 							container.before(data);
 							container.remove();
@@ -30,7 +30,8 @@
 					$("a.endless_page_link").live("click", function() {
 						var page_template = $(this).closest(".endless_page_template");
 						if(!page_template.hasClass("endless_page_skip")) {
-							var data = "querystring_key=" + $(this).attr("rel").split(" ")[0];
+							var data = "querystring_key=" + $(this).attr("rel").split(" ")[0] + "&lat=" + $.cookie('lat') + "&lon=" + $.cookie('lon');
+							
 							page_template.load($(this).attr("href"), data);
 							$('ul').listview('refresh');
 							return false;
@@ -87,6 +88,7 @@
 					$(this).remove();
 				})
 			});
+			
 			navigator.geolocation.getCurrentPosition(whatsupGetLocation);
 			function whatsupGetLocation(location) {
 
@@ -94,8 +96,10 @@
 				//  document.getElementById("lon").innerHTML =  location.coords.longitude;
 
 				document.getElementById("showclose").innerHTML = "C";
-				document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-
+				document.getElementById("showclose").href = "../?lat=" + location.coords.latitude + "&lon=" + location.coords.longitude;
+				$.cookie('lat' , location.coords.latitude);
+				$.cookie('lon',location.coords.longitude);
+				
 			}
 		</script>
 	</body>
