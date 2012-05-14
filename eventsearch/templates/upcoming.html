@@ -51,7 +51,8 @@
 	<div id="lon"></div-->
 
     <script>
-      
+      // swipe to hide
+      $(".ui-li").swiperight(function(){$(this).fadeOut(300,function(){$(this).remove();})});
       navigator.geolocation.getCurrentPosition(whatsupGetLocation);
       function whatsupGetLocation(location) {
       
