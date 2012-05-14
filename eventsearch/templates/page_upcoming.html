@@ -1,0 +1,22 @@
+{% load endless %}
+{% paginate events%}
+{% for e in events %}
+<li>
+	<a href="../event/{{ e.id }}" rel="external" data-ajax="true"> <h3>{{ e.location.name }}</h3>
+	<p style="font-weight:bold; font-size:10pt">
+		{{ e.name }}
+	</p>
+	<p>
+		{% if e.days > 0 %}
+		{{ e.days }} days,
+		{% endif %}
+		{{ e.minutes }} minutes left
+	</p>
+	<p>
+		{% if e.distance_view != nil  %}
+		{{ e.distance_view }} m
+		{%endif%}
+	</p> </a>
+</li>
+{% endfor %}
+{% show_more %}

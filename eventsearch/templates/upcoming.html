@@ -1,68 +1,101 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 		
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-    <script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
-    <style type="text/css">
-      div {
-      font: bold 10pt;
-      }
-    </style>
-  </head>
-  <body>
-    <div data-role="header">
-      <h1>WhatsUpcoming</h1> 
-      <a id="showclose" data-icon="gear" class="ui-btn-right">gettingLoc</a>
-    </div>
-    <div data-role="content">
-      {% if events %}
-      <ul data-role="listview" data-split-theme="a">
-	<!--ul data-role="listview" data-inset="true" data-filter="true"-->
-	{% for e in events %}
-	<li>
-	  <a href="../event/{{ e.id }}" rel="external" data-ajax="true">
-	    <h3>{{ e.location.name }}</h3>
-	    <p style="font-weight:bold; font-size:10pt">
-	      {{ e.name }}	      
-	    </p>
-	    <p>	
-	      {% if e.days > 0 %}
-	      {{ e.days }} days,
-	      {% endif %}
-	      {{ e.minutes }} minutes left
-	    </p>
-	    <p>
-	      {% if e.distance_view != nil  %}
-	      {{ e.distance_view }} m
-	      {%endif%}
-	    </p>
-	  </a>
-	</li>
-	{% endfor %}
-      </ul>
-      {% else %}
-      <p>No events upcoming</p>
-      {% endif %}
-    </div>
-    <!--div id="lat"></div>
-	<div id="lon"></div-->
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+		
 
-    <script>
-      // swipe to hide
-      $(".ui-li").swiperight(function(){$(this).fadeOut(300,function(){$(this).remove();})});
-      navigator.geolocation.getCurrentPosition(whatsupGetLocation);
-      function whatsupGetLocation(location) {
-      
-      //  document.getElementById("lat").innerHTML = location.coords.latitude;
-      //  document.getElementById("lon").innerHTML =  location.coords.longitude;
-      
-      document.getElementById("showclose").innerHTML = "C";
-      document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
-      
-      }
-    </script>
-  </body>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+		<script src="https://github.com/carhartl/jquery-cookie/blob/master/jquery.cookie.js"></script>
+		{% block js %}
+    	
+		<script >
+				var endless_on_scroll_margin = 20; (function($) {
+				$(document).ready(function() {
+					$("a.endless_more").live("click", function() {
+						var container = $(this).closest(".endless_container");
+						var loading = container.find(".endless_loading");
+						$(this).hide();
+						loading.show();
+						var data = "querystring_key=" + $(this).attr("rel").split(" ")[0];
+						$.get($(this).attr("href"), data, function(data) {
+							container.before(data);
+							container.remove();
+						});
+						$('ul').listview('refresh');
+						return false;
+					});
+					$("a.endless_page_link").live("click", function() {
+						var page_template = $(this).closest(".endless_page_template");
+						if(!page_template.hasClass("endless_page_skip")) {
+							var data = "querystring_key=" + $(this).attr("rel").split(" ")[0];
+							page_template.load($(this).attr("href"), data);
+							$('ul').listview('refresh');
+							return false;
+						};
+					});
+				});
+			})(jQuery); (function($) {
+				$(document).ready(function() {
+					var margin = 1;
+					if( typeof endless_on_scroll_margin != 'undefined') {
+						margin = endless_on_scroll_margin;
+					};
+					$(window).scroll(function() {
+						if($(document).height() - $(window).height() - $(window).scrollTop() <= margin) {
+							$("a.endless_more").click();
+							$('ul').listview('refresh');
+						}
+					});
+				});
+			})(jQuery);
+
+		</script>
+		{% endblock %}
+    
+		<style type="text/css">
+			div {
+				font: bold 10pt;
+			}
+		</style>
+	</head>
+	<body>
+		<div data-role="header">
+			<h1>WhatsUpcoming</h1>
+			<a id="showclose" data-icon="gear" class="ui-btn-right">gettingLoc</a>
+		</div>
+		<div data-role="content">
+			{% if events %}
+			<ul data-role="listview" data-split-theme="a">
+				<!--ul data-role="listview" data-inset="true" data-filter="true"-->
+				{% include page_template %}
+			</ul>
+			{% else %}
+			<p>
+				No events upcoming
+			</p>
+			{% endif %}
+		</div>
+		<!--div id="lat"></div>
+		<div id="lon"></div-->
+		<script>
+			// swipe to hide
+			$(".ui-li").swiperight(function() {
+				$(this).fadeOut(300, function() {
+					$(this).remove();
+				})
+			});
+			navigator.geolocation.getCurrentPosition(whatsupGetLocation);
+			function whatsupGetLocation(location) {
+
+				//  document.getElementById("lat").innerHTML = location.coords.latitude;
+				//  document.getElementById("lon").innerHTML =  location.coords.longitude;
+
+				document.getElementById("showclose").innerHTML = "C";
+				document.getElementById("showclose").href = "../upcoming/?lat=	" + location.coords.latitude + "&lon=" + location.coords.longitude;
+
+			}
+		</script>
+	</body>
 </html>

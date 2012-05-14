@@ -6,3 +6,4 @@ lxml==2.3.4
 psycopg2==2.4.5
 -e git+https://github.com/slimkrazy/python-google-places.git@42fdd5041ec80f018aa7ab9dabe40b983c4ef38f#egg=python_google_places-dev
 wsgiref==0.1.2
+django-endless-pagination==1.1

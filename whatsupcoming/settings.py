@@ -6,6 +6,13 @@ except:
 
 import os
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+     'django.core.context_processors.request',
+)
+
+ENDLESS_PAGINATION_PER_PAGE = 6
+
 PROJECT_PATH = os.path.abspath('%s/..' % os.path.dirname(__file__))
 PROJECT_ROOT = PROJECT_PATH
 
@@ -131,6 +138,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'endless_pagination',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
