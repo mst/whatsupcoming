@@ -12,7 +12,7 @@
 {% if event %}
 <div data-role="header"> 
 	<h1>{{ event.name }}</H1>
-	<a data-icon="back" class="ui-btn-left" href="../../upcoming">back</a>
+	<a data-icon="back" class="ui-btn-left" href="javascript:window.history.back();">back</a>
 </div>
 <div data-role="content">
 Start Date: {{ event.date_start }}</br>
