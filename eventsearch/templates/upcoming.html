@@ -12,7 +12,7 @@
 		{% block js %}
     	
 		<script >
-				var endless_on_scroll_margin = 200; (function($) {
+				var endless_on_scroll_margin = 20; (function($) {
 				$(document).ready(function() {
 					$("a.endless_more").live("click", function() {
 						var container = $(this).closest(".endless_container");
@@ -39,11 +39,13 @@
 				});
 			})(jQuery); (function($) {
 				$(document).ready(function() {
+					$('ul').listview('refresh');
 					var margin = 1;
 					if( typeof endless_on_scroll_margin != 'undefined') {
 						margin = endless_on_scroll_margin;
 					};
 					$(window).scroll(function() {
+						$('ul').listview('refresh');
 						if($(document).height() - $(window).height() - $(window).scrollTop() <= margin) {
 							$("a.endless_more").click();
 							$('ul').listview('refresh');
