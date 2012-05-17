@@ -14,8 +14,12 @@
 		{% if e.distance_view != nil  %}
 		{{ e.distance_view }} m
 		{%endif%}
-		
 	</p> 
+	<p>
+	  {% for category in e.categories.all %}
+	    {{category}}
+	  {% endfor %}
+	</p>
 </a>
 </li>
 {% endfor %}
